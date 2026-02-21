@@ -1,0 +1,27 @@
+#SPDX-License-Identifier: MIT-0
+---
+- name: NGINX | Install on Fedora
+  notify: start nginx
+  become: true
+  ansible.builtin.yum:
+    name: nginx
+  when: ansible_distribution == 'Fedora'
+- name: NGINX | Install on Ubuntu
+  notify: start nginx
+  become: true
+  ansible.builtin.apt:
+    name: nginx
+  when: ansible_distribution == 'Ubuntu'
+- name: LIGHTHOUSE | Clone
+  become: true
+  ansible.builtin.git:
+    repo: https://github.com/VKCOM/lighthouse.git
+    dest: ~/lighthouse
+    clone: yes
+- name: LIGHTHOUSE | Create Ngix config
+  become: true
+  notify: reload nginx
+  ansible.builtin.template:
+    src: "templates/nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+# tasks file for lighthouse-role

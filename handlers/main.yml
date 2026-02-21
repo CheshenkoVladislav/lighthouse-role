@@ -1,0 +1,8 @@
+#SPDX-License-Identifier: MIT-0
+- name: start nginx
+  become: true
+  command: nginx
+- name: reload nginx
+  become: true
+  command: nginx -s reload
+# handlers file for lighthouse-role
